@@ -5,7 +5,7 @@
 
 void Player::initVariables()
 {
-	this->moving = false;
+	this->animState = PLAYER_ANIMATION_STATES::IDLE;
 }
 
 void Player::initTexture()
@@ -26,7 +26,7 @@ void Player::initSprite()
 	this->sprite.setTexture(this->textureSheet);
 	this->currentFrame = sf::IntRect(0, 0, 40, 50);
 	this->sprite.setTextureRect(this->currentFrame);
-	this->sprite.setScale(2.5f, 2.5f);
+	this->sprite.setScale(4.5f, 4.5f);
 }
 
 void Player::initAnimations()
@@ -56,56 +56,71 @@ Player::~Player()
 
 void Player::updateMovement()
 {
-	this->moving = false;
+
+	this->animState = PLAYER_ANIMATION_STATES::IDLE;
 
 	//Move left
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
 	{
-		this->sprite.move(-1.f, 0.f);
-		this->moving = true;
+		this->sprite.move(-1.5f, 0.f);
+		this->animState = PLAYER_ANIMATION_STATES::MOVING_LEFT;
 	}
 
 	//Move right
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
 	{
-		this->sprite.move(1.f, 0.f);
-		this->moving = true;
+		this->sprite.move(1.5f, 0.f);
+		this->animState = PLAYER_ANIMATION_STATES::MOVING_RIGHT;
 	}
 
-	//Move down
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
-	{
-		this->sprite.move(0.f, 1.f);
-		this->moving = true;
-	}
-
-	//Move up
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
-	{
-		this->sprite.move(0.f, -1.f);
-		this->moving = true;
-	}
 }
 
 void Player::updateAnimations()
 {
 
-	if (this->animationTimer.getElapsedTime().asSeconds() >= 0.2f)
+	if (this->animState == PLAYER_ANIMATION_STATES::IDLE)
 	{
-		//IDLE ANIMATION
-		if (this->moving == false)
+		if (this->animationTimer.getElapsedTime().asSeconds() >= 0.2f)
 		{
+			//IDLE ANIMATION
+			this->currentFrame.top = 0.f;
 			this->currentFrame.left += 40.f;
+
 			if (this->currentFrame.left >= 160.f)
 			{
 				this->currentFrame.left = 0;
 			}
 
+			this->animationTimer.restart();
+			this->sprite.setTextureRect(this->currentFrame);
 		}
-
-		this->animationTimer.restart();
-		this->sprite.setTextureRect(this->currentFrame);
 	}
+
+	else if (this->animState == PLAYER_ANIMATION_STATES::MOVING_RIGHT)
+	{
+
+		if (this->animationTimer.getElapsedTime().asSeconds() >= 0.1f)
+		{
+			//MOVING RIGHT ANIMATION
+			this->currentFrame.top = 50.f;
+			this->currentFrame.left += 40.f;
+
+			if (this->currentFrame.left >= 360.f)
+			{
+				this->currentFrame.left = 0;
+			}
+
+			this->animationTimer.restart();
+			this->sprite.setTextureRect(this->currentFrame);
+		}
+	}
+
+	else
+	{
+		this->animationTimer.restart();
+	}
+
+	
 
 }
 
@@ -113,6 +128,11 @@ void Player::update()
 {
 	this->updateMovement();
 	this->updateAnimations();
+}
+
+void Player::updatePhysics()
+{
+
 }
 
 //RENDERS

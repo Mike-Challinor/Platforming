@@ -1,5 +1,7 @@
 #pragma once
 
+enum PLAYER_ANIMATION_STATES {IDLE = 0, MOVING_LEFT, MOVING_RIGHT, JUMPING, FALLING};
+
 class Player
 {
 private:
@@ -12,10 +14,13 @@ private:
 	sf::Texture textureSheet;
 
 	//ANIMATION
+	short animState;
 	sf::IntRect currentFrame;
 
-	//MOVEMENT
-	bool moving;
+	//PHYSICS
+	sf::Vector2f velocity;
+	float acceleration;
+	float deceleration;
 
 	//CORE
 
@@ -34,6 +39,7 @@ public:
 	//PUBLIC FUNCTIONS
 
 	//UPDATES
+	void updatePhysics();
 	void updateMovement();
 	void updateAnimations();
 	void update();
