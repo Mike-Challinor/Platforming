@@ -8,7 +8,7 @@ void Game::initWindow()
 {
 	this->videoMode = sf::VideoMode(800, 600);
 	this->window.create(this->videoMode, "Platforming!", sf::Style::Close | sf::Style::Titlebar);
-	this->window.setFramerateLimit(144);
+	this->window.setFramerateLimit(60);
 }
 
 void Game::initPlayer()
