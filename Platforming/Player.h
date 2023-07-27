@@ -9,6 +9,7 @@ private:
 	sf::Texture textureSheet;
 
 	//ANIMATION
+	sf::IntRect currentFrame;
 
 	//MOVEMENT
 
@@ -27,6 +28,7 @@ public:
 	//PUBLIC FUNCTIONS
 
 	//UPDATES
+	void updateMovement();
 	void update();
 
 	//RENDERS

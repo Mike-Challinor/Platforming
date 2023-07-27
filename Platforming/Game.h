@@ -33,6 +33,8 @@ public:
 	void update();
 
 	//RENDERS
+
+	void renderPlayer();
 	void render();
 
 };
