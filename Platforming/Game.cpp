@@ -59,6 +59,12 @@ void Game::update()
 		{
 			this->window.close();
 		}
+
+		//If movement keys are released then reset the players animation timer.
+		if (this->ev.type == sf::Event::KeyReleased && (this->ev.key.code == sf::Keyboard::A || this->ev.key.code == sf::Keyboard::D || this->ev.key.code == sf::Keyboard::S || this->ev.key.code == sf::Keyboard::W))
+		{
+			this->player->resetAnimationTimer();
+		}
 	}
 
 	this->updatePlayer();

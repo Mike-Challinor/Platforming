@@ -16,6 +16,7 @@ private:
 	//ANIMATION
 	short animState;
 	sf::IntRect currentFrame;
+	bool animationSwitch;
 
 	//PHYSICS
 	sf::Vector2f velocity;
@@ -23,6 +24,8 @@ private:
 	float velocityMin;
 	float acceleration;
 	float drag;
+	float gravity;
+	float velocityMaxY;
 
 	//CORE
 
@@ -39,8 +42,12 @@ public:
 	Player();
 	virtual ~Player();
 
+	//ACCESSORS
+	const bool& getAnimSwitch();
+
 	//PUBLIC FUNCTIONS
 	void move(const float dir_x, const float dir_y);
+	void resetAnimationTimer();
 
 	//UPDATES
 	void updatePhysics();

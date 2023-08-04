@@ -32,6 +32,7 @@ void Player::initSprite()
 void Player::initAnimations()
 {
 	this->animationTimer.restart();
+	this->animationSwitch = true;
 }
 
 void Player::initPhysics()
@@ -40,6 +41,8 @@ void Player::initPhysics()
 	this->velocityMin = 1.f;
 	this->acceleration = 3.f;
 	this->drag = 0.85f;
+	this->gravity = 4.f;
+	this->velocityMaxY = 15.f;
 
 }
 
@@ -62,6 +65,12 @@ Player::~Player()
 
 //PUBLIC FUNCTIONS
 
+void Player::resetAnimationTimer()
+{
+	this->animationTimer.restart();
+	this->animationSwitch = true;
+}
+
 void Player::move(const float dir_x, const float dir_y)
 {
 
@@ -75,10 +84,35 @@ void Player::move(const float dir_x, const float dir_y)
 	}
 }
 
+//ACCESSORS
+
+const bool& Player::getAnimSwitch()
+{
+	bool anim_switch = this->animationSwitch;
+
+	if (this->animationSwitch)
+	{
+		this->animationSwitch = false;
+	}
+
+	return anim_switch;
+
+}
+
 //UPDATES
 
 void Player::updatePhysics()
 {
+
+	//Gravity
+	this->velocity.y += 1.0f * this->gravity;
+
+	//Limit gravity
+	if (std::abs(this->velocity.y) > this->velocityMaxY)
+	{
+		this->velocity.y = this->velocityMaxY * ((this->velocity.y < 0.f) ? -1.f : 1.f);
+	}
+
 	//Drag
 	this->velocity *= this->drag;
 
@@ -123,7 +157,7 @@ void Player::updateAnimations()
 
 	if (this->animState == PLAYER_ANIMATION_STATES::IDLE)
 	{
-		if (this->animationTimer.getElapsedTime().asSeconds() >= 0.2f)
+		if (this->animationTimer.getElapsedTime().asSeconds() >= 0.2f || this->getAnimSwitch())
 		{
 			//IDLE ANIMATION
 			this->currentFrame.top = 0.f;
@@ -142,7 +176,7 @@ void Player::updateAnimations()
 	else if (this->animState == PLAYER_ANIMATION_STATES::MOVING_RIGHT)
 	{
 
-		if (this->animationTimer.getElapsedTime().asSeconds() >= 0.1f)
+		if (this->animationTimer.getElapsedTime().asSeconds() >= 0.1f || this->getAnimSwitch())
 		{
 			//MOVING RIGHT ANIMATION
 			this->currentFrame.top = 50.f;
