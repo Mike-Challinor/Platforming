@@ -44,6 +44,11 @@ public:
 
 	//ACCESSORS
 	const bool& getAnimSwitch();
+	const sf::FloatRect getBounds() const;
+
+	//MODIFIERS
+	void setPosition(const float x, const float y);
+	void resetVelocityY();
 
 	//PUBLIC FUNCTIONS
 	void move(const float dir_x, const float dir_y);

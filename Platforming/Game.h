@@ -30,6 +30,7 @@ public:
 
 	//UPDATES
 	void updatePlayer();
+	void updateCollision();
 	void update();
 
 	//RENDERS

@@ -99,6 +99,23 @@ const bool& Player::getAnimSwitch()
 
 }
 
+const sf::FloatRect Player::getBounds() const
+{
+	return this->sprite.getGlobalBounds();
+}
+
+//MODIFIERS
+
+void Player::setPosition(const float x, const float y)
+{
+	this->sprite.setPosition(x, y);
+}
+
+void Player::resetVelocityY()
+{
+	this->velocity.y = 0.f;
+}
+
 //UPDATES
 
 void Player::updatePhysics()
