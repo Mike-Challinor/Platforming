@@ -26,7 +26,7 @@ void Player::initSprite()
 	this->sprite.setTexture(this->textureSheet);
 	this->currentFrame = sf::IntRect(0, 0, 40, 50);
 	this->sprite.setTextureRect(this->currentFrame);
-	this->sprite.setScale(4.5f, 4.5f);
+	this->sprite.setScale(3.f, 3.f);
 }
 
 void Player::initAnimations()
@@ -39,8 +39,8 @@ void Player::initPhysics()
 {
 	this->velocityMax = 20.f;
 	this->velocityMin = 1.f;
-	this->acceleration = 3.f;
-	this->drag = 0.85f;
+	this->acceleration = 3.3f;
+	this->drag = 0.87f;
 	this->gravity = 4.f;
 	this->velocityMaxY = 15.f;
 
@@ -97,6 +97,11 @@ const bool& Player::getAnimSwitch()
 
 	return anim_switch;
 
+}
+
+const sf::Vector2f Player::getPosition() const
+{
+	return this->sprite.getPosition();
 }
 
 const sf::FloatRect Player::getBounds() const
@@ -207,6 +212,32 @@ void Player::updateAnimations()
 			this->animationTimer.restart();
 			this->sprite.setTextureRect(this->currentFrame);
 		}
+
+		this->sprite.setScale(3.f, 3.f);
+		this->sprite.setOrigin(0.f, 0.f);
+	}
+
+	else if (this->animState == PLAYER_ANIMATION_STATES::MOVING_LEFT)
+	{
+
+		if (this->animationTimer.getElapsedTime().asSeconds() >= 0.1f || this->getAnimSwitch())
+		{
+			//MOVING RIGHT ANIMATION
+			this->currentFrame.top = 50.f;
+			this->currentFrame.left += 40.f;
+
+			if (this->currentFrame.left >= 360.f)
+			{
+				this->currentFrame.left = 0;
+			}
+
+			this->animationTimer.restart();
+			this->sprite.setTextureRect(this->currentFrame);
+		}
+
+		this->sprite.setScale(-3.f, 3.f);
+		this->sprite.setOrigin(this->sprite.getGlobalBounds().width / 3.f, 0.f);
+
 	}
 
 	else
@@ -231,4 +262,11 @@ void Player::render(sf::RenderTarget& target)
 {
 	
 	target.draw(this->sprite);
+
+	sf::CircleShape circ;
+	circ.setFillColor(sf::Color::Red);
+	circ.setRadius(2.f);
+	circ.setPosition(this->sprite.getPosition());
+
+	target.draw(circ);
 }

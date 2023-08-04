@@ -46,10 +46,10 @@ void Game::updatePlayer()
 void Game::updateCollision()
 {
 	//Check bottom boundary
-	if (this->player->getBounds().top + this->player->getBounds().height > this->window.getSize().y)
+	if (this->player->getPosition().y + this->player->getBounds().height > this->window.getSize().y)
 	{
 		this->player->resetVelocityY();
-		this->player->setPosition(this->player->getBounds().left, this->window.getSize().y - this->player->getBounds().height);
+		this->player->setPosition(this->player->getPosition().x, this->window.getSize().y - this->player->getBounds().height);
 	}
 }
 

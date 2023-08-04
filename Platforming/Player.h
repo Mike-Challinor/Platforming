@@ -44,6 +44,7 @@ public:
 
 	//ACCESSORS
 	const bool& getAnimSwitch();
+	const sf::Vector2f getPosition() const;
 	const sf::FloatRect getBounds() const;
 
 	//MODIFIERS
